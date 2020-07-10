@@ -72,17 +72,17 @@ summary(log_model)
 exp(0.07179)
 exp(-0.09899)
 exp(0.43397)
-log_model12 = glm(flushot ~ age+aware,data= data, family = binomial())
-summary(log_model12)
+log_model2 = glm(flushot ~ age+aware,data= data, family = binomial())
+summary(log_model2)
 table(data$flushot)
 24/(134+24)      ## --> 0.1518987
-tt = table(data$flushot, log_model12$fitted.values>0.1518987)  ## 0.1518987 : 임계값
+tt = table(data$flushot, log_model2$fitted.values>0.1518987)  ## 0.1518987 : 임계값
 c('민감도' = 19/(5+19), '특이도' = 95/(95+40), '에러율' = 45/sum(tt))  ## 에러율45는 40+5해서 나온것
-rocplot(log_model12)
+rocplot(log_model2)
 
-tab_01 = table(data$flushot, log_model12$fitted.values>0.1)
-tab_015 = table(data$flushot, log_model12$fitted.values>0.15)
-tab_02 = table(data$flushot, log_model12$fitted.values>0.2)
+tab_01 = table(data$flushot, log_model2$fitted.values>0.1)
+tab_015 = table(data$flushot, log_model2$fitted.values>0.15)
+tab_02 = table(data$flushot, log_model2$fitted.values>0.2)
 
 tab_01
 tab_015
@@ -110,26 +110,32 @@ jang = function() {
   n = length(k)
   
   err_min = vector(length = n)
-  sens[i] = vector(length = n)
-  spec[i] = vector(length = n)
+  sens = vector(length = n)
+  spec = vector(length = n)
   
-  for(i in 1:n) :
-    tab = table(data$flushot, log_model2$fitted.values = k[i])
+  for(i in 1:n) {
+    tab = table(data$flushot, log_model2$fitted.values > k[i])
     res =  c('민감도' = tab[2,2]/sum(tab[2,1]), 
              '특이도' = tab[1,1]/sum(tab[1,]),
              '에러율' = (tab[1,2]+tab_02[2,1]/sum(tab)))
-  
+    err_min[i]=tab[2,1]/sum(tab[2,])
+    spec[i] = tab[1,1]/sum(tab[1,])
+    print(res)
+  }
 
   print(err_min)
   print(paste("최소의 error rate = ",min(err_min),"이다"))
+  index=which(err_min<=min(err_min))
   print(err_min <= min(err_min))
   print(index)
   print(paste("해당되는 민감도 = ",sens[min(index)],"이다."))
   print(paste("해당되는 특이도 = ",spec[min(index)],"이다."))
   print(paste("해당되는 에러율 = ",err_min[min(index)],"이다."))
   print(paste("해당되는 cutoff = ",k[min(index)],"이다."))
+
+  plot(1-spec, sens, col =2)
 }
-plot(1-spec, sens, col =2)
+
 
 jang()
 
@@ -164,7 +170,7 @@ faces(crime[, 2:8])
 
 education = read.csv("http://datasets.flowingdata.com/education.csv")
 head(education)
-
+  
 library(lattice)
 parallel(education[, 2:7])
 parallel(education[, 2:7], horizontal.axis = FALSE)
