@@ -46,3 +46,27 @@ hist(data2$QTY)
 cor(data1_eff)
 cor(data2_eff)
 
+## 다중회귀분석
+## R에서는 step() 함수를 사용하여 변수선택을 결정할 수 있다.
+## direction이 변수선택 방법을 지정하는 것이다. direction이 both이면 단계이고, forward이면 전진, backward이면 후진이 된다.
+## QTY를 종속변수로 하고, 나머지 변수를 모두 독립변수로 한 다중회귀분석
+out1 = lm(QTY~., data = data1_eff)
+out2 = lm(QTY~., data = data2_eff)
+both1 = step(out1, direction="both",trace = FALSE)
+both2 = step(out2, direction="both",trace = FALSE)
+summary(both1)
+summary(both2)
+
+
+## 추정을 위한 회귀모형에 따른 유의성 검증과 잔차 분석
+## 분산분석 (ANOVA : Analysis Of Variance)    ----> 더알아보기!!
+
+anova(both1)
+anova(both2)
+
+par(mfrow = c(2,2))
+plot(lm(QTY~.,data=data1_eff))
+
+
+## 예측모형 검증
+
