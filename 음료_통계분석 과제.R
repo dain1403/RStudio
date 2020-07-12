@@ -3,37 +3,37 @@ library(dplyr)
 install.packages("ggplot2")
 library(ggplot2)
 
-## ë°ì´í„° ë¶ˆëŸ¬ì˜¤ê¸°
+## µ¥ÀÌÅÍ ºÒ·¯¿À±â
 setwd("C:/Users/dain1/Desktop/")
 data = read.csv("ai_sales_data.csv")
 head(data)
 
-## ë°ì´í„° êµ¬ì„± - ë°ì´í„°ëŠ”10ê°œì˜ ë³€ìˆ˜ì™€ 120ê°œì˜ objectë¡œ êµ¬ì„±ë˜ì–´ ìžˆìŒ.
+## µ¥ÀÌÅÍ ±¸¼º - µ¥ÀÌÅÍ´Â10°³ÀÇ º¯¼ö¿Í 120°³ÀÇ object·Î ±¸¼ºµÇ¾î ÀÖÀ½.
 str(data)
 
-## data1 --> ë¹„íƒ€ë¯¼ìŒë£Œë§Œ
-data1 = data %>% filter(CATEGORY == "ë¹„íƒ€ë¯¼ìŒë£Œ")
+## data1 --> ºñÅ¸¹ÎÀ½·á¸¸
+data1 = data %>% filter(CATEGORY == "ºñÅ¸¹ÎÀ½·á")
 str(data1)
 head(data1)
 
-## data1 - ì˜í–¥ë³€ìˆ˜ë“¤ë§Œ
-data1_eff = data1 %>% select(-X, -YM, -CATEGORY)
+## data1 - ¿µÇâº¯¼öµé¸¸
+data1_eff = data1 %>% select(-YM, -CATEGORY)  ## -x ? --> -X ÇÏ¸é both¿¡¼­ saleday¾È³ª¿È
 data1_eff
 
-## data2 --> ìŠ¤í¬ì¸ ,ì´ì˜¨ìŒë£Œë§Œ
-data2 = data %>% filter(CATEGORY == "ìŠ¤í¬ì¸ ,ì´ì˜¨ìŒë£Œ")
+## data2 --> ½ºÆ÷Ã÷,ÀÌ¿ÂÀ½·á¸¸
+data2 = data %>% filter(CATEGORY == "½ºÆ÷Ã÷,ÀÌ¿ÂÀ½·á")
 str(data2)
 head(data2)
 
-## data2 - ì˜í–¥ë³€ìˆ˜ë“¤ë§Œ
-data2_eff = data2 %>% select(-X, -YM, -CATEGORY)
+## data2 - ¿µÇâº¯¼öµé¸¸
+data2_eff = data2 %>% select(-YM, -CATEGORY)  ## -X ?
 data2_eff
 
 
 
-## shapiro.test : ë°ì´í„°ê°€ ì •ê·œ ë¶„í¬ë¥¼ ë”°ë¥´ëŠ”ì§€ ìƒ¤í”¼ë¡œ ìœŒí¬ ê²€ì •ì„ ìˆ˜í–‰í•œë‹¤
-### ë°©ë²• : ì¼ë°˜ íƒ„ì‚°ìŒë£Œì™€ ê³¼ì¦™ìŒë£Œë¥¼ ë¹„êµ ë¶„ì„í•˜ì—¬ ì§„í–‰.
-### ê°ê° í•˜ìŠ¤í† ê·¸ëž¨ê³¼ ì •ê·œì„± í…ŒìŠ¤íŠ¸ë¥¼ í†µí•˜ì—¬ ê¸°ì¤€ì„ p_value>0.05ë¡œ ì„ ì •.
+## shapiro.test : µ¥ÀÌÅÍ°¡ Á¤±Ô ºÐÆ÷¸¦ µû¸£´ÂÁö »þÇÇ·Î ÀªÅ© °ËÁ¤À» ¼öÇàÇÑ´Ù
+### ¹æ¹ý : ÀÏ¹Ý Åº»êÀ½·á¿Í °úÁóÀ½·á¸¦ ºñ±³ ºÐ¼®ÇÏ¿© ÁøÇà.
+### °¢°¢ ÇÏ½ºÅä±×·¥°ú Á¤±Ô¼º Å×½ºÆ®¸¦ ÅëÇÏ¿© ±âÁØÀ» p_value>0.05·Î ¼±Á¤.
 
 shapiro.test(data1$QTY)
 shapiro.test(data2$QTY)
@@ -42,14 +42,14 @@ hist(data1$QTY)
 hist(data2$QTY)
 
 
-## ìƒê´€ê´€ê³„ë¶„ì„
+## »ó°ü°ü°èºÐ¼®
 cor(data1_eff)
 cor(data2_eff)
 
-## ë‹¤ì¤‘íšŒê·€ë¶„ì„
-## Rì—ì„œëŠ” step() í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ì—¬ ë³€ìˆ˜ì„ íƒì„ ê²°ì •í•  ìˆ˜ ìžˆë‹¤.
-## directionì´ ë³€ìˆ˜ì„ íƒ ë°©ë²•ì„ ì§€ì •í•˜ëŠ” ê²ƒì´ë‹¤. directionì´ bothì´ë©´ ë‹¨ê³„ì´ê³ , forwardì´ë©´ ì „ì§„, backwardì´ë©´ í›„ì§„ì´ ëœë‹¤.
-## QTYë¥¼ ì¢…ì†ë³€ìˆ˜ë¡œ í•˜ê³ , ë‚˜ë¨¸ì§€ ë³€ìˆ˜ë¥¼ ëª¨ë‘ ë…ë¦½ë³€ìˆ˜ë¡œ í•œ ë‹¤ì¤‘íšŒê·€ë¶„ì„
+## ´ÙÁßÈ¸±ÍºÐ¼®
+## R¿¡¼­´Â step() ÇÔ¼ö¸¦ »ç¿ëÇÏ¿© º¯¼ö¼±ÅÃÀ» °áÁ¤ÇÒ ¼ö ÀÖ´Ù.
+## directionÀÌ º¯¼ö¼±ÅÃ ¹æ¹ýÀ» ÁöÁ¤ÇÏ´Â °ÍÀÌ´Ù. directionÀÌ bothÀÌ¸é ´Ü°èÀÌ°í, forwardÀÌ¸é ÀüÁø, backwardÀÌ¸é ÈÄÁøÀÌ µÈ´Ù.
+## QTY¸¦ Á¾¼Óº¯¼ö·Î ÇÏ°í, ³ª¸ÓÁö º¯¼ö¸¦ ¸ðµÎ µ¶¸³º¯¼ö·Î ÇÑ ´ÙÁßÈ¸±ÍºÐ¼®
 out1 = lm(QTY~., data = data1_eff)
 out2 = lm(QTY~., data = data2_eff)
 both1 = step(out1, direction="both",trace = FALSE)
@@ -58,8 +58,8 @@ summary(both1)
 summary(both2)
 
 
-## ì¶”ì •ì„ ìœ„í•œ íšŒê·€ëª¨í˜•ì— ë”°ë¥¸ ìœ ì˜ì„± ê²€ì¦ê³¼ ìž”ì°¨ ë¶„ì„
-## ë¶„ì‚°ë¶„ì„ (ANOVA : Analysis Of Variance)    ----> ë”ì•Œì•„ë³´ê¸°!!
+## ÃßÁ¤À» À§ÇÑ È¸±Í¸ðÇü¿¡ µû¸¥ À¯ÀÇ¼º °ËÁõ°ú ÀÜÂ÷ ºÐ¼®
+## ºÐ»êºÐ¼® (ANOVA : Analysis Of Variance)    ----> ´õ¾Ë¾Æº¸±â!!
 
 anova(both1)
 anova(both2)
@@ -68,5 +68,14 @@ par(mfrow = c(2,2))
 plot(lm(QTY~.,data=data1_eff))
 
 
-## ì˜ˆì¸¡ëª¨í˜• ê²€ì¦
+## ¿¹Ãø¸ðÇü °ËÁõ
+data1_eff = data1_eff %>% 
+  mutate(QTY1_pred = -22.12 + 29.59*X + 52.28*ITEM_CNT + 96.27*PRICE + 67.31 * MAXTEMP + 70.23*SALEDAY + 50.63*RAIN_DAY)
+head(data1_eff)
+mean(data1_eff$QTY1_pred)
+
+
+
+m <- lm(QTY~.,data=data1_eff)
+predict(m , newdata = data1_eff)
 
