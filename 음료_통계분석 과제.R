@@ -1,10 +1,13 @@
 install.packages("dplyr")
-library(dplyr)
 install.packages("ggplot2")
+install.packages("caret")
+library(dplyr)
 library(ggplot2)
+library(caret)
 
 ## 데이터 불러오기
-setwd("C:/Users/dain1/Desktop/")
+#setwd("C:/Users/dain1/Desktop/")
+setwd("c:/Rdata")
 data = read.csv("ai_sales_data.csv")
 head(data)
 
@@ -17,7 +20,7 @@ str(data1)
 head(data1)
 
 ## data1 - 영향변수들만
-data1_eff = data1 %>% select(-YM, -CATEGORY)  ## -x ? --> -X 하면 both에서 saleday안나옴
+data1_eff = data1 %>% select(-X, -YM, -CATEGORY)  ## -x ? --> -X 하면 both에서 saleday안나옴
 data1_eff
 
 ## data2 --> 스포츠,이온음료만
@@ -26,7 +29,7 @@ str(data2)
 head(data2)
 
 ## data2 - 영향변수들만
-data2_eff = data2 %>% select(-YM, -CATEGORY)  ## -X ?
+data2_eff = data2 %>% select(-X, -YM, -CATEGORY)  ## -X ?
 data2_eff
 
 
@@ -70,12 +73,31 @@ plot(lm(QTY~.,data=data1_eff))
 
 ## 예측모형 검증
 data1_eff = data1_eff %>% 
-  mutate(QTY1_pred = -22.12 + 29.59*X + 52.28*ITEM_CNT + 96.27*PRICE + 67.31 * MAXTEMP + 70.23*SALEDAY + 50.63*RAIN_DAY)
-head(data1_eff)
-mean(data1_eff$QTY1_pred)
+  mutate(QTY_pred = -1054 + 22.46*ITEM_CNT + 0.6854*PRICE + 8.875 * MAXTEMP + 0.006731*RAIN_DAY)
+data1_eff
+
+data2_eff = data2_eff %>% 
+  mutate(QTY_pred =2328 - 3.122*PRICE + 66.72 * MAXTEMP + 0.01273*SALEDAY + 76.38*HOLIDAY)
+data2_eff
+
+## train_set, test_set
+idx = sample(1:nrow(data1_eff),size = nrow(data1_eff)*0.7, replace = F)
+
+#train.idx = createDataPartition(data1_eff$QTY, p = 0.7, list = F)  
+
+data1_train = data1_eff[train.idx, ]
+data1_test = data1_eff[-train.idx, ]
+
+## 70프로 30프로 나눈 것 확인
+dim(data1_train)
+dim(data1_test)
 
 
 
-m <- lm(QTY~.,data=data1_eff)
-predict(m , newdata = data1_eff)
+
+
+## Accurancy
+data1_eff = data1_eff %>%
+  mutate(QTY_acc = (QTY_pred/QTY) * 100)
+data1_eff
 
