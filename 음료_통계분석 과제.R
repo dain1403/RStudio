@@ -20,7 +20,7 @@ str(data1)
 head(data1)
 
 ## data1 - 영향변수들만
-data1_eff = data1 %>% select(-X, -YM, -CATEGORY)  ## -x ? --> -X 하면 both에서 saleday안나옴
+data1_eff = data1 %>% select(-YM, -CATEGORY)  ## -x ? --> -X 하면 both에서 saleday안나옴
 data1_eff
 
 ## data2 --> 스포츠,이온음료만
@@ -29,7 +29,7 @@ str(data2)
 head(data2)
 
 ## data2 - 영향변수들만
-data2_eff = data2 %>% select(-X, -YM, -CATEGORY)  ## -X ?
+data2_eff = data2 %>% select(-YM, -CATEGORY)  ## -X ?
 data2_eff
 
 
@@ -73,12 +73,35 @@ plot(lm(QTY~.,data=data1_eff))
 
 ## 예측모형 검증
 data1_eff = data1_eff %>% 
-  mutate(QTY_pred = -1054 + 22.46*ITEM_CNT + 0.6854*PRICE + 8.875 * MAXTEMP + 0.006731*RAIN_DAY)
+  mutate(QTY_pred = -2212 + -29.59*X +52.28*ITEM_CNT + 0.9627*PRICE + 9.764 * MAXTEMP + 0.007023*SALEDAY+ 0.005063*RAIN_DAY)
 data1_eff
 
 data2_eff = data2_eff %>% 
   mutate(QTY_pred =2328 - 3.122*PRICE + 66.72 * MAXTEMP + 0.01273*SALEDAY + 76.38*HOLIDAY)
 data2_eff
+
+
+
+## Accurancy
+data1_eff = data1_eff %>%
+  mutate(QTY_acc = ifelse(QTY_pred < QTY, ((QTY_pred/QTY) * 100),((QTY/QTY_pred) * 100)))
+data1_eff
+
+mean(data1_eff$QTY_acc)
+
+data2_eff = data2_eff %>%
+  mutate(QTY_acc = ifelse(QTY_pred < QTY, ((QTY_pred/QTY) * 100),((QTY/QTY_pred) * 100)))
+data2_eff
+
+mean(data2_eff$QTY_acc)
+
+
+
+
+
+
+
+
 
 ## train_set, test_set
 idx = sample(1:nrow(data1_eff),size = nrow(data1_eff)*0.7, replace = F)
@@ -93,11 +116,11 @@ dim(data1_train)
 dim(data1_test)
 
 
+## 훈련
+lm.fit = lm(QTY~., data = data1_train)
+summary(lm.fit)
 
-
-
-## Accurancy
-data1_eff = data1_eff %>%
-  mutate(QTY_acc = (QTY_pred/QTY) * 100)
-data1_eff
-
+## 예측
+lm.yhat = predict(lm.fit, newdata = data1_test)
+lm.yhat
+# mean((lm.yhat - data1_test$QTY)^2)
