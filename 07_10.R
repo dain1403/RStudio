@@ -1,22 +1,22 @@
-setwd("c:/Rdata") 
+setwd("c:/Rdata")  
 data = read.csv("programming.csv")
 head(data)
 
-## glm ??“£??„»?ë¹? æ¿¡ì’–??€??’ª??–›??‰¶æ´¹Â€ï§â‘¦?‚??“£ fitting??–†?ê¶???–. 
-## family='binomial' ??”¤??˜„?‘œ? ??„»?ë¹?, glm??‘æ¿?? æ¿¡ì’–??€??’ª??–› ??‰¶æ´¹Â€ï§â‘¦?‚??“£ ?ë²? ??‹” ??—³??–
+## glm ì„í†µí•´ ë¡œì§€ìŠ¤í‹±íšŒê·€ëª¨í˜•ì„ fittingì‹œí‚¨ë‹¤. 
+## family='binomial' ì¸ìë¥¼ í†µí•´, glmìœ¼ë¡œ ë¡œì§€ìŠ¤í‹± íšŒê·€ëª¨í˜•ì„ ì“¸ ìˆ˜ ìˆë‹¤
 model = glm(Success ~ Experience,data = data, family = binomial(logit))
-summary(model)
+summary(model)    
 cbind(data$Experience, model$fitted.values)
 plot(Success~Experience, data = data)
 points(model$fitted.values ~ data$Experience, col = 2)
 
 table(data$Success, model$fitted.values > 0.5)
-c('èª˜ì‡¨ì»??ë£?' = 8/11, '??“…??” ?ë£?' = 11/24)
+c('ë¯¼ê°ë„' = 8/11, 'íŠ¹ì´ë„' = 11/24)
 
 data = read.csv("coupon.csv")
 head(data)
 model2 = glm(cbind(N_redeemed, N-N_redeemed)~Price_reduc, data = data, 
-    family = binomial(logit))
+             family = binomial(logit))
 summary(model2)
 exp(0.096834)
 
@@ -33,10 +33,10 @@ table(data$disease)
 32/98
 kk = table(data$disease, model4$fitted.values > 0.3163265)
 sum(kk)
-reduce_M = c('èª˜ì‡¨ì»??ë£?' = 23/31, '??“…??” ?ë£?' = 47/(47+20))
+reduce_M = c('ë¯¼ê°ë„' = 23/31, 'íŠ¹ì´ë„' = 47/(47+20))
 kk1 = table(data$disease, model4$fitted.values > 0.3163265)
 kk1
-fulmode_M = c('èª˜ì‡¨ì»??ë£?' = 23/31, '??“…??” ?ë£?' = 49/(49+18))
+fulmode_M = c('ë¯¼ê°ë„' = 23/31, 'íŠ¹ì´ë„' = 49/(49+18))
 reduce_M
 fulmode_M
 err_m1 = 28/sum(kk)
@@ -62,8 +62,8 @@ rocplot(model4)
 
 
 ##########################################################
-##### HW æ¿¡ì’–??€??’ª??–›
-## ?ë¿???’¿?‡¾ëª„ì £ ???€??” 
+##### HW ë¡œì§€ìŠ¤í‹±
+## ì—°ìŠµë¬¸ì œ í’€ì´
 
 data = read.csv("flushot.csv")
 head(data)
@@ -76,8 +76,8 @@ log_model2 = glm(flushot ~ age+aware,data= data, family = binomial())
 summary(log_model2)
 table(data$flushot)
 24/(134+24)      ## --> 0.1518987
-tt = table(data$flushot, log_model2$fitted.values>0.1518987)  ## 0.1518987 : ??—«?€¨ê¾§ì»?
-c('èª˜ì‡¨ì»??ë£?' = 19/(5+19), '??“…??” ?ë£?' = 95/(95+40), '?ë¿???œ­??‘‰' = 45/sum(tt))  ## ?ë¿???œ­??‘‰45??’— 40+5?ë¹??ê½? ?êµ???‚©å¯??
+tt = table(data$flushot, log_model2$fitted.values>0.1518987)  ## 0.1518987 : ì„ê³„ê°’
+c('ë¯¼ê°ë„' = 19/(5+19), 'íŠ¹ì´ë„' = 95/(95+40), 'ì—ëŸ¬ìœ¨' = 45/sum(tt))  ## ì—ëŸ¬ìœ¨45ëŠ” 40+5í•´ì„œ ë‚˜ì˜¨ê²ƒ
 rocplot(log_model2)
 
 tab_01 = table(data$flushot, log_model2$fitted.values>0.1)
@@ -87,19 +87,19 @@ tab_02 = table(data$flushot, log_model2$fitted.values>0.2)
 tab_01
 tab_015
 tab_02
-res01 = c('èª˜ì‡¨ì»??ë£?' = tab_01[2,2]/sum(tab_01[2,1]), 
-                                  '??“…??” ?ë£?' = tab_01[1,1]/sum(tab_01[1,]),
-                                  '?ë¿???œ­??‘‰' = (tab_01[1,2]+tab_01[2,1]/sum(tab_01)))
+res01 = c('ë¯¼ê°ë„' = tab_01[2,2]/sum(tab_01[2,1]), 
+          'íŠ¹ì´ë„' = tab_01[1,1]/sum(tab_01[1,]),
+          'ì—ëŸ¬ìœ¨' = (tab_01[1,2]+tab_01[2,1]/sum(tab_01)))
 res01
 
-res015 = c('èª˜ì‡¨ì»??ë£?' = tab_015[2,2]/sum(tab_015[2,1]), 
-          '??“…??” ?ë£?' = tab_015[1,1]/sum(tab_015[1,]),
-          '?ë¿???œ­??‘‰' = (tab_015[1,2]+tab_015[2,1]/sum(tab_015)))
+res015 = c('ë¯¼ê°ë„' = tab_015[2,2]/sum(tab_015[2,1]), 
+           'íŠ¹ì´ë„' = tab_015[1,1]/sum(tab_015[1,]),
+           'ì—ëŸ¬ìœ¨' = (tab_015[1,2]+tab_015[2,1]/sum(tab_015)))
 res015
 
-res02 = c('èª˜ì‡¨ì»??ë£?' = tab_02[2,2]/sum(tab_02[2,1]), 
-           '??“…??” ?ë£?' = tab_02[1,1]/sum(tab_02[1,]),
-           '?ë¿???œ­??‘‰' = (tab_02[1,2]+tab_02[2,1]/sum(tab_02)))
+res02 = c('ë¯¼ê°ë„' = tab_02[2,2]/sum(tab_02[2,1]), 
+          'íŠ¹ì´ë„' = tab_02[1,1]/sum(tab_02[1,]),
+          'ì—ëŸ¬ìœ¨' = (tab_02[1,2]+tab_02[2,1]/sum(tab_02)))
 res02
 
 model4$fitted.values
@@ -115,24 +115,24 @@ jang = function() {
   
   for(i in 1:n) {
     tab = table(data$flushot, log_model2$fitted.values > k[i])
-    res =  c('èª˜ì‡¨ì»??ë£?' = tab[2,2]/sum(tab[2,1]), 
-             '??“…??” ?ë£?' = tab[1,1]/sum(tab[1,]),
-             '?ë¿???œ­??‘‰' = (tab[1,2]+tab_02[2,1]/sum(tab)))
+    res =  c('ë¯¼ê°ë„' = tab[2,2]/sum(tab[2,1]), 
+             'íŠ¹ì´ë„' = tab[1,1]/sum(tab[1,]),
+             'ì—ëŸ¬ìœ¨' = (tab[1,2]+tab_02[2,1]/sum(tab)))
     err_min[i]=tab[2,1]/sum(tab[2,])
     spec[i] = tab[1,1]/sum(tab[1,])
     print(res)
   }
-
+  
   print(err_min)
-  print(paste("ï§¤ì’–?ƒ¼??“½ error rate = ",min(err_min),"??” ??–"))
+  print(paste("ìµœì†Œì˜ error rate = ",min(err_min),"ì´ë‹¤"))
   index=which(err_min<=min(err_min))
   print(err_min <= min(err_min))
   print(index)
-  print(paste("?ë¹???–¦?ë¦???’— èª˜ì‡¨ì»??ë£? = ",sens[min(index)],"??” ??–."))
-  print(paste("?ë¹???–¦?ë¦???’— ??“…??” ?ë£? = ",spec[min(index)],"??” ??–."))
-  print(paste("?ë¹???–¦?ë¦???’— ?ë¿???œ­??‘‰ = ",err_min[min(index)],"??” ??–."))
-  print(paste("?ë¹???–¦?ë¦???’— cutoff = ",k[min(index)],"??” ??–."))
-
+  print(paste("í•´ë‹¹ë˜ëŠ” ë¯¼ê°ë„ = ",sens[min(index)],"ì´ë‹¤."))
+  print(paste("í•´ë‹¹ë˜ëŠ” íŠ¹ì´ë„ = ",spec[min(index)],"ì´ë‹¤."))
+  print(paste("í•´ë‹¹ë˜ëŠ” ì—ëŸ¬ìœ¨ = ",err_min[min(index)],"ì´ë‹¤."))
+  print(paste("í•´ë‹¹ë˜ëŠ” cutoff = ",k[min(index)],"ì´ë‹¤."))
+  
   plot(1-spec, sens, col =2)
 }
 
@@ -148,7 +148,7 @@ jang()
 
 
 ##########################################################################
-############### Lecture12_??–è¹‚Â€??›¾??˜„?Œ·?š°ê¹??ê¹?_äºŒì‡±ê½??ºê¾¨í…‡?ê½?   
+############### Lecture12_ë‹¤ë³€ëŸ‰ìë£Œíƒìƒ‰_ì£¼ì„±ë¶„ë¶„ì„   
 
 crime = read.csv("http://datasets.flowingdata.com/crimeRatesByState-formatted.csv")
 head(crime)
@@ -158,11 +158,11 @@ rownames(crime)
 rownames(crime) = crime[, 1]
 rownames(crime)
 
-## draw.segments = TRUE : ?ê¹‹ï§¢ê¾©ìŠ¦æ¹??
+## draw.segments = TRUE : ìƒ‰ì±„ìš°ê¸°
 stars(crime[, 2:8], flip.labels = FALSE, draw.segments = TRUE, key.loc = 2)
 
 
-## ï§£ë?€?…¤??‚?ë´???Ÿ¹??” ??’ª
+## ì²´ë¥´ë…¸í”„í˜ì´ìŠ¤
 install.packages("aplpack")
 library(aplpack)
 faces(crime[, 2:8])
@@ -170,7 +170,7 @@ faces(crime[, 2:8])
 
 education = read.csv("http://datasets.flowingdata.com/education.csv")
 head(education)
-  
+
 library(lattice)
 parallel(education[, 2:7])
 parallel(education[, 2:7], horizontal.axis = FALSE)
@@ -201,13 +201,13 @@ head(data)
 
 model = prcomp(data[, 2:6], scale = T)
 biplot(model)
-  
+
 
 
 ##########################################
-###### ??–è¹‚Â€??›¾ ?ë¿???’¿?‡¾ëª„ì £  - HW ??–è¹‚Â€??›¾?ºê¾©ê½
+###### ë‹¤ë³€ëŸ‰ ì—°ìŠµë¬¸ì œ  - HW ë‹¤ë³€ëŸ‰ë¶„ì„
 
-####1è¸?? 20140528_baseball.csv??’— 2014??€? 5??¡ 28??”ª ??½??˜± ?ë¸³æ´? ?ë´½æ¿¡?’–ë¹æ´? åª?? ???€??“½ ?ê½???Ÿ»??“£ è¹‚ëŒë¿¬ä»¥?€??–.??”  ??˜„?Œ·?š®?? ??” ??Šœ?ë¹? è¹‚ê¾§? ‡?”±?,ï§£ë?€?…¤??‚?ë´???Ÿ¹??” ??’ª, ?êµ???” ??˜¿å¯ƒëš¯?”ª ï§¡â‘¦?“ƒ?‘œ? ??Ÿ»?? …?ë¸? label??“£ ?ë£??ë¸??ë¸??ë¿? æ´¹ëªƒ?”?€?? ?®ê¾©ë“‚?ë¸? ??™£?ê½???“£ åª›Â€ï§Â€??’— æ´¹ëªƒï¼???‘æ¿?? ?êµ???Š»?ë¼? åª?? æ´¹ëªƒï¼???”  ?ë¼??ë¼? è¹‚Â€??‹”??Ÿ» ??“…ï§ëº¤?“£ åª›Â€ï§Â€??’—ï§Â€ ?ê½???‹ ?ë¸??ë¿???”ª.
+####1ë²ˆ 20140528_baseball.csvëŠ” 2014ë…„ 5ì›” 28ì¼ í˜„ì¬ í•œêµ­ í”„ë¡œì•¼êµ¬ ê° íŒ€ì˜ ì„±ì ì„ ë³´ì—¬ì¤€ë‹¤.ì´ ìë£Œë¥¼ ì´ìš©í•´ ë³„ê·¸ë¦¼,ì²´ë¥´ë…¸í”„í˜ì´ìŠ¤, ë‚˜ì´íŒ…ê²Œì¼ ì°¨íŠ¸ë¥¼ ì ì ˆí•œ labelì„ í¬í•¨í•˜ì—¬ ê·¸ë¦¬ê³  ë¹„ìŠ·í•œ íŒ¨í„´ì„ ê°€ì§€ëŠ” ê·¸ë£¹ìœ¼ë¡œ ë‚˜ëˆ„ì–´ ê° ê·¸ë£¹ì´ ì–´ë–¤ ë³€ìˆ˜ì  íŠ¹ì§•ì„ ê°€ì§€ëŠ”ì§€ ì„œìˆ í•˜ì—¬ë¼.
 data = read.csv("20140528_baseball.csv")
 head(data)
 rownames(data) = data[,1]
@@ -216,13 +216,13 @@ stars(data[, 2:6], flip.labels = F, key.loc = c(9,3), draw.segments = T)
 faces(data[, 2:6])
 
 
-#### 2è¸??	2013_baseball.csv??’— 2013??€? ??–†ï§?? åª?? ???€??˜„??“½ ?ê½???Ÿ»??“£ ?ë£??ë¸??ë¸??€?? ??—³??–.?ë£??ë»¾é†«?š°ëª? ?ëµ†æ¿¡???“£ ??†¢??Šœ?ë¹? ?ê½???‹”?ë±???“½ ?ê½???Ÿ» ??™£?ê½??ë¿? ?ë¼??ë¼? å¯ƒì?€ë¼???”  ??—³??’—ï§Â€ ?ë¸??ë¸˜è¹‚??€? ® ?ë¸???–.?ë£·ï§?€??€? è¹??,???€è¹?? ?ë£??ë»¾é†«?š°ëª? ?ëµ†æ¿¡???“£ æ´¹ëªƒ?”?€?? åª?? ?ë£·ï§?€??€?,??ƒŠ???€ ???€è¹?? ???€??˜„??“½ ?ê½???Ÿ»?ë¿? ?ë¼??ë¼? å¯ƒì?€ë¼???”  ??—³??’—ï§Â€ ?ê½???‹ ?ë¸???”ª.
+#### 2ë²ˆ	2013_baseball.csvëŠ” 2013ë…„ ì‹œì¦Œ ê° íƒ€ìì˜ ì„±ì ì„ í¬í•¨í•˜ê³  ìˆë‹¤.í‰í–‰ì¢Œí‘œ í”Œë¡¯ì„ í™œìš©í•´ ì„ ìˆ˜ë“¤ì˜ ì„±ì  íŒ¨í„´ì— ì–´ë–¤ ê²½í–¥ì´ ìˆëŠ”ì§€ ì•Œì•„ë³´ë ¤ í•œë‹¤.í¬ì§€ì…˜ ë³„,íŒ€ë³„ í‰í–‰ì¢Œí‘œ í”Œë¡¯ì„ ê·¸ë¦¬ê³  ê° í¬ì§€ì…˜,í˜¹ì€ íŒ€ë³„ íƒ€ìì˜ ì„±ì ì— ì–´ë–¤ ê²½í–¥ì´ ìˆëŠ”ì§€ ì„œìˆ í•˜ë¼.
 bb2013 = read.csv("2013_baseball.csv")
 head(bb2013)
-position = bb2013$?ë£·ï§?€??€?
+position = bb2013$í¬ì§€ì…˜
 head(position)
 base2_pos = bb2013[,c(2, 4:11)]
-base2_pos2 = aggregate(base2_pos[, 2:9], by = list(?ë£·ï§?€??€? = base2_pos$?ë£·ï§?€??€?), sum)
+base2_pos2 = aggregate(base2_pos[, 2:9], by = list(í¬ì§€ì…˜ = base2_pos$í¬ì§€ì…˜), sum)
 head(base2_pos2)
 rownames(base2_pos2) = base2_pos2[,1]
 head(base2_pos2)
@@ -230,12 +230,12 @@ library(lattice)
 parallel(base2_pos2[,2:9], horizontal.axis = F, col =1)
 
 
-# ???€è¹‚ê¾ªë£??ë»¾é†«?š°ëª?
-team = bb2013$???€
+# íŒ€ë³„í‰í–‰ì¢Œí‘œ
+team = bb2013$íŒ€
 parallel(~bb2013[,4:11]|team,horizontal.axis = F, col =1)
 
 
-######## 3è¸??	2013_baseball.csv?ë¿? ??—³??’— åª?? ???€??˜„?ë¿? ???€?ë¸? è¹‚Â€??‹”?‘œ? ?ê¶???Šœ?ë¸??ë¿? äºŒì‡±ê½??º? ?ºê¾©ê½??“£ ??–†?ë»??ë¸???”ª.??Ÿ»??–¦?ë¸? äºŒì‡±ê½??ºê¾©ì“½ åª›ì’–?‹”?‘œ? ??™†?ë¸??ë¸??€?? ?ë¹???–¦ äºŒì‡±ê½??ºê¾¨ë±¾æ¿?? ?ê½•ï§?‚…ë¦???’— ?ºê¾©ê¶›??“½ ?®ê¾©ì‘‰??“£ ?´?‹ë¸¯??”ª.?ë»??? ¹?ë£„ç‘œ? ??„»?ë¹? ?ê½???‹”?ë±???“½ ??“…ï§ëº¤?”  ?ë¼??ë¼¸å¯ƒ? ??™†?ë¸??ë¦???’—ï§Â€ ?ê¶??? £è¹‚ëŒ?–†??‚¤.
+######## 3ë²ˆ	2013_baseball.csvì— ìˆëŠ” ê° íƒ€ìì— ëŒ€í•œ ë³€ìˆ˜ë¥¼ ì‚¬ìš©í•˜ì—¬ ì£¼ì„±ë¶„ ë¶„ì„ì„ ì‹œí–‰í•˜ë¼.ì ë‹¹í•œ ì£¼ì„±ë¶„ì˜ ê°œìˆ˜ë¥¼ íŒŒì•…í•˜ê³  í•´ë‹¹ ì£¼ì„±ë¶„ë“¤ë¡œ ì„¤ëª…ë˜ëŠ” ë¶„ì‚°ì˜ ë¹„ìœ¨ì„ êµ¬í•˜ë¼.í–‰ë ¬ë„ë¥¼ í†µí•´ ì„ ìˆ˜ë“¤ì˜ íŠ¹ì§•ì´ ì–´ë–»ê²Œ íŒŒì•…ë˜ëŠ”ì§€ ì‚´í´ë³´ì‹œì˜¤.
 rownames(bb2013) = bb2013[,1]
 rownames(bb2013)
 model = prcomp(bb2013[,4:11], scale = T)
